@@ -1,0 +1,1 @@
+sumaDiez x = x+10
