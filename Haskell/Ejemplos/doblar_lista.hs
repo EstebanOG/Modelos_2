@@ -1,0 +1,1 @@
+doblarLista = map(\x -> 2*x)
