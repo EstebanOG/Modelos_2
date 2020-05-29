@@ -2,7 +2,7 @@ from random import shuffle
 
 
 def baraja():
-    return [(n,p) for n in ['A','J','Q','K']+[str(x) for x in range(2,11)] for p in ['Picas', 'Corazones', 'Trevoles', 'Diamantes']]
+    return [(n,p) for n in ['A','J','Q','K']+[str(x) for x in range(2,11)] for p in ['Picas', 'Corazones', 'Tréboles', 'Diamantes']]
 
 def mezclar(baraja):
     shuffle(baraja)
@@ -29,36 +29,45 @@ def valor_mano(mano):
     return valor_carta(mano[0]) + valor_mano(mano[1:])
 
 def valor_mano_recargado(mano):
-    if mano == 0:
+    if mano == []:
         return 0
     elif valor_mano(mano) <= 11 and 1 in [valor_carta(x) for x in mano]:
         return valor_mano(mano) + 10
     else:
         return valor_mano(mano)
 
-
 def jugar(mazo, jugador, repartidor):
-    #print (jugador, "Carta oculta" , repartidor[1:])
     if len(mazo) > 48:
         jugar(mazo[2:], jugador+[mazo[0]], repartidor+[mazo[1]])
     else: 
         print (jugador, "[Carta oculta," , repartidor[1],"]")
         if len(mazo) > 2 and valor_mano_recargado(jugador) <= 21:
             if input("Pedir carta(s/n): ").capitalize() == "S":
-                jugar(mazo[2:], jugador+[mazo[0]], repartidor)
+                jugar(mazo[1:], jugador+[mazo[0]], repartidor)
             else:
-                print("Juego:")
-                print (jugador, repartidor)
-                if valor_mano_recargado(jugador)==valor_mano_recargado(repartidor):
-                    print("Juego empatado. Gana el repartidor")
-                elif valor_mano_recargado(jugador)>valor_mano_recargado(repartidor):
-                    print("Gana el jugador")
-                else:
+                if valor_mano_recargado(jugador)<=valor_mano_recargado(repartidor):
+                    print (jugador, repartidor)
                     print("Gana el repartidor")
+                else:
+                    juego_repartidor(mazo,jugador,repartidor)  
         else:
             print("Juego:")
             print (jugador, repartidor)
             print("Gana el repartidor")
+
+def juego_repartidor(mazo,jugador,repartidor):
+    print (jugador, repartidor)
+    if valor_mano_recargado(repartidor)<valor_mano_recargado(jugador) and valor_mano_recargado(repartidor) < 21:
+        juego_repartidor(mazo[1:],jugador,repartidor+[mazo[0]])
+    else:
+        if valor_mano_recargado(jugador)<=valor_mano_recargado(repartidor) and valor_mano_recargado(repartidor)<=21:
+            print("Juego:")
+            print (jugador, repartidor)
+            print("Gana el repartidor")
+        else:
+            print("Juego:")
+            print (jugador, repartidor)
+            print("Gana el jugador")
 
 #print(mezclar(baraja()))
 #sacar_carta(mezclar(baraja()))
