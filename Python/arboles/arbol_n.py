@@ -38,6 +38,9 @@ def insertar(arbol, valor):
 		if valor[:-1] in [x.valor for x in arbol.hijos]:
 			#temp = [x.valor for x in arbol.hijos].index(valor[:-1])
 			return NodoN(arbol.valor, arbol.hijos[:[x.valor for x in arbol.hijos].index(valor[:-1])]+[insertar(arbol.hijos[[x.valor for x in arbol.hijos].index(valor[:-1])], valor)]+arbol.hijos[[x.valor for x in arbol.hijos].index(valor[:-1])+1:])
+		else:
+			if valor[:-2] in [x.valor for x in arbol.hijos]:
+				return NodoN(arbol.valor, arbol.hijos[:[x.valor for x in arbol.hijos].index(valor[:-2])]+[insertar_hijos(arbol.hijos[[x.valor for x in arbol.hijos].index(valor[:-2])], valor)]+arbol.hijos[[x.valor for x in arbol.hijos].index(valor[:-2])+1:])
 		return insertar_hijos(arbol,valor)
 
 def insertar_hijos(arbol, valor):
